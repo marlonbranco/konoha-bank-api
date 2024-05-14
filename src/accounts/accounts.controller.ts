@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Patch, Param, Inject, Get } from '@nestjs/common';
+import { Controller, Post, Body, Param, Inject, Get } from '@nestjs/common';
 import {
   ApiOperation,
   ApiTags,
@@ -6,7 +6,6 @@ import {
 
 import { CreateAccountDto } from './dto/create-account.dto';
 import { CreateAccountUseCase } from './use-cases/create.use-case';
-import { EmailAccountDto } from './dto/email-account.dto';
 import { GetBalanceUseCase } from './use-cases/get-balance.use-case';
 import { GetAccountStatementUseCase } from './use-cases/get-account-statement.use-case';
 
