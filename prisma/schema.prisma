@@ -36,8 +36,8 @@ model Statement {
     id            Int          @id @default(autoincrement())
     transaction   Transactions @relation(fields: [transactionId], references: [id])
     transactionId Int
-    Account       Account?     @relation(fields: [accountId], references: [id])
-    accountId     Int?
+    Account       Account      @relation(fields: [accountId], references: [id])
+    accountId     Int
     amount        Decimal      @db.Money()
     newBalance    Decimal      @db.Money()
     oldBalance    Decimal      @db.Money()

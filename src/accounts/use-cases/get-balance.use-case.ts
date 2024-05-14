@@ -8,10 +8,21 @@ export class GetBalanceUseCase {
     private prismaService: PrismaService;
 
     async execute (id: number,) {
-        return (await this.prismaService.account.findUnique({
+        const { email, currency, balance } = await this.prismaService.account.findUnique({
+            select: {
+                email: true,
+                currency: true,
+                balance: true
+            },
             where: {
                 id
             }
-        })).balance
+        });
+
+        if (!email) {
+            throw new Error('Account not found');
+        }
+
+        return { currency, balance: +balance.toFixed(2) }
     }
 }

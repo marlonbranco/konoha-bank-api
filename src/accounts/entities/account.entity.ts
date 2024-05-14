@@ -1,5 +1,4 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { Decimal } from "@prisma/client/runtime/library";
 import { PrismaService } from "src/prisma.service";
 
 @Injectable()
@@ -30,19 +29,5 @@ export class AccountEntity {
                 email: email
             }
         });
-    }
-
-    async checkIfAccountHasBalance (amount: Decimal, accountId: number): Promise<Decimal> {
-        const account = await this.prismaService.account.findUnique({
-            where: {
-                id: accountId
-            }
-        });
-
-        if (account.balance < amount) {
-            throw new Error("Insufficient funds");
-        }
-
-        return account.balance;
     }
 }

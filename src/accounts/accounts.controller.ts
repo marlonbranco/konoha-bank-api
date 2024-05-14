@@ -6,10 +6,7 @@ import {
 
 import { CreateAccountDto } from './dto/create-account.dto';
 import { CreateAccountUseCase } from './use-cases/create.use-case';
-import { ChangeEmailAccountUseCase } from './use-cases/change-email.use-case';
 import { EmailAccountDto } from './dto/email-account.dto';
-import { UpdateAccountUseCase } from './use-cases/update-account.use-case';
-import { UpdateAccountDto } from './dto/update-account.dto';
 import { GetBalanceUseCase } from './use-cases/get-balance.use-case';
 import { GetAccountStatementUseCase } from './use-cases/get-account-statement.use-case';
 
@@ -18,12 +15,6 @@ import { GetAccountStatementUseCase } from './use-cases/get-account-statement.us
 export class AccountsController {
   @Inject(CreateAccountUseCase)
   private createAccountUseCase: CreateAccountUseCase;
-
-  @Inject(ChangeEmailAccountUseCase)
-  private changeEmailAccountUseCase: ChangeEmailAccountUseCase;
-
-  @Inject(UpdateAccountUseCase)
-  private updateAccountUseCase: UpdateAccountUseCase;
 
   @Inject(GetBalanceUseCase)
   private getBalanceUseCase: GetBalanceUseCase;
@@ -35,19 +26,6 @@ export class AccountsController {
   @ApiOperation({ summary: 'Create account' })
   create (@Body() data: CreateAccountDto) {
     return this.createAccountUseCase.execute(data);
-  }
-
-
-  @Patch(':id/update-account')
-  @ApiOperation({ summary: 'Update account' })
-  updateAccount (@Param('id') id: number, @Body() data: UpdateAccountDto) {
-    return this.updateAccountUseCase.execute(id, data);
-  }
-
-  @Patch(':id/change-email')
-  @ApiOperation({ summary: 'Change email account' })
-  changeEmail (@Param('id') id: number, @Body() data: EmailAccountDto) {
-    return this.changeEmailAccountUseCase.execute(id, data);
   }
 
   @Get(':id/balance')

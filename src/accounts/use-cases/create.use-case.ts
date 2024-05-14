@@ -3,6 +3,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { AccountEntity } from "../entities/account.entity";
 import { CreateAccountDto } from "../dto/create-account.dto";
 import { PrismaService } from "src/prisma.service";
+import { Decimal } from "@prisma/client/runtime/library";
 
 @Injectable()
 export class CreateAccountUseCase {
@@ -18,7 +19,7 @@ export class CreateAccountUseCase {
             data: {
                 name: data.name,
                 email: data.email,
-                balance: 0,
+                balance: new Decimal(0.00),
                 currency: 'USD'
             }
         });

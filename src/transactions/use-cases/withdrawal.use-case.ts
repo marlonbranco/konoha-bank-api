@@ -4,6 +4,7 @@ import { PrismaService } from "src/prisma.service";
 import { AccountEntity } from "../../accounts/entities/account.entity";
 import { SingleWayTransactionDto } from "../dto/single-way-transaction.dto";
 import { Decimal } from "@prisma/client/runtime/library";
+import { TransactionType } from "@prisma/client";
 
 @Injectable()
 export class WithdrawalUseCase {
@@ -18,24 +19,19 @@ export class WithdrawalUseCase {
 
         const oldBalance = +balance
 
-        // const isValueSafe = Number.isSafeInteger(oldBalance + data.amount);
-
-        // if (isValueSafe) {
-        //     throw new Error('The balance is too high');
-        // }
         const newBalance = oldBalance - data.amount;
 
-        await this.prismaService.transactions.create({
+        const transaction = await this.prismaService.transactions.create({
             data: {
                 amount: new Decimal(data.amount),
-                type: 'DEPOSIT',
+                type: TransactionType.WITHDRAWAL,
                 senderId: id,
                 receiverId: id,
                 Statements: {
                     create: [
                         {
                             accountId: id,
-                            amount: new Decimal(data.amount),
+                            amount: new Decimal(-data.amount),
                             newBalance: new Decimal(newBalance),
                             oldBalance: new Decimal(oldBalance),
                         },
@@ -43,7 +39,7 @@ export class WithdrawalUseCase {
                 }
             }
         })
-        return await this.prismaService.account.update({
+        await this.prismaService.account.update({
             where: {
                 id
             },
@@ -51,5 +47,7 @@ export class WithdrawalUseCase {
                 balance: new Decimal(newBalance),
             }
         });
+
+        return transaction.id
     }
 } 

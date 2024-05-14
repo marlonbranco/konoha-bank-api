@@ -4,6 +4,7 @@ import { PrismaService } from "src/prisma.service";
 import { AccountEntity } from "../../accounts/entities/account.entity";
 import { BothWaysTransactionDto } from "../dto/both-ways-transaction.dto";
 import { Decimal } from "@prisma/client/runtime/library";
+import { TransactionType } from "@prisma/client";
 
 @Injectable()
 export class TransferUseCase {
@@ -40,7 +41,7 @@ export class TransferUseCase {
                 senderId,
                 receiverId,
                 amount: new Decimal(data.amount),
-                type: 'TRANSFER',
+                type: TransactionType.TRANSFER,
                 Statements: {
                     create: [
                         {

@@ -12,14 +12,25 @@ export class GetAccountStatementUseCase {
                 amount: true,
                 transaction: {
                     select: {
-                        sender: true
+                        type: true,
+                        sender: {
+                            select: {
+                                name: true,
+                                email: true,
+                            }
+                        },
+                        receiver: {
+                            select: {
+                                name: true,
+                                email: true,
+                            }
+                        },
                     }
                 }
             },
             where: {
                 accountId: id
             },
-
         });
     }
 }
