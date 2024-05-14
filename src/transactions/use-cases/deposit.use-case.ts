@@ -18,6 +18,10 @@ export class DepositUseCase {
     async execute (data: SingleWayTransactionDto) {
         const { id, balance } = await this.accountEntity.getAccountData(data.email);
 
+        if (data.amount <= 0) {
+            throw new Error('Invalid amount');
+        }
+
         const oldBalance = +balance
 
         const newBalance = oldBalance + data.amount;

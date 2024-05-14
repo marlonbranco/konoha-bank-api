@@ -79,4 +79,26 @@ describe('WithdrawalUseCase', () => {
         });
         expect(result).toEqual(1);
     });
+
+    it('should throw an error if the account has insufficient funds', async () => {
+        const dto: SingleWayTransactionDto = { email: 'john.doe', amount: 100 };
+        const accountData = {
+            id: 1,
+            balance: new Decimal(50),
+            name: 'John Doe',
+            email: 'john.doe',
+            currency: 'USD',
+            createdAt: "2024-05-13T17:49:13.722Z",
+            updatedAt: "2024-05-13T17:49:13.722Z"
+        };
+
+        jest.spyOn(accountEntity, 'getAccountData').mockResolvedValue(accountData);
+
+        try {
+            await withdrawalUseCase.execute(dto)
+        } catch (error) {
+            expect(error).toBeInstanceOf(Error);
+            expect(error.message).toBe('Insufficient funds');
+        }
+    })
 });

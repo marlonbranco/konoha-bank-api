@@ -26,14 +26,15 @@ This banking system was developed using Clean Archtecture concepts.
 | ✅ | Transfer amount between two accounts |
 | ✅ | Make a withdrawal |
 
-#### OBS: There is a .env.example on the project, you just have to create a new copy with the name .env and it wil work
 
 ## Running the application 🍃
 
-#### 🔴 OBS: I was not able to containerize the entire app, because there is an issue with Mac and Docker ports exposure. But there is a sever service inside the docker-compose that you can play with if you wish.
+#### Info: I was not able to containerize the entire app, because there is an issue with Mac and Docker ports exposure. But there is a sever service inside the docker-compose that you can play with if you wish.
 
 
-After cloning the project, run the following command:
+🔴 After cloning the project, you need to create a .env file, you can just rename the .env.example on the project and it should work just fine.
+
+Now run the following command to start the project locally:
 
 ```bash
 npm run deploy:locally

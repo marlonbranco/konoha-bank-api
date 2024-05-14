@@ -14,7 +14,7 @@ export class CreateAccountUseCase {
     private accountEntity: AccountEntity;
 
     async execute (data: CreateAccountDto) {
-        this.accountEntity.checkIfEmailExists(data.email);
+        await this.accountEntity.checkIfEmailExists(data.email);
         return await this.prismaService.account.create({
             data: {
                 name: data.name,

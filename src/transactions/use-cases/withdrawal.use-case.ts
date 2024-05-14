@@ -21,6 +21,10 @@ export class WithdrawalUseCase {
 
         const newBalance = oldBalance - data.amount;
 
+        if (oldBalance < data.amount) {
+            throw new Error('Insufficient funds');
+        }
+
         const transaction = await this.prismaService.transactions.create({
             data: {
                 amount: new Decimal(data.amount),

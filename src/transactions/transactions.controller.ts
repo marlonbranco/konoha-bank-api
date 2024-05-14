@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Inject } from '@nestjs/common';
+import { Controller, Post, Body, Inject, HttpException, Catch, BadRequestException, HttpStatus } from '@nestjs/common';
 import {
   ApiOperation,
   ApiTags,
@@ -12,6 +12,7 @@ import { BothWaysTransactionDto } from './dto/both-ways-transaction.dto';
 
 @ApiTags('transactions')
 @Controller('transactions')
+@Catch(HttpException)
 export class TransactionsController {
   @Inject(DepositUseCase)
   private depositUseCase: DepositUseCase;
@@ -24,19 +25,31 @@ export class TransactionsController {
 
   @Post('/deposit')
   @ApiOperation({ summary: 'Deposit to an account' })
-  deposit (@Body() data: SingleWayTransactionDto) {
-    return this.depositUseCase.execute(data);
+  async deposit (@Body() data: SingleWayTransactionDto) {
+    try {
+      return await this.depositUseCase.execute(data);
+    } catch (err) {
+      throw new BadRequestException({ statusCode: HttpStatus.BAD_REQUEST, message: err.message });
+    }
   }
 
   @Post('/transfer')
   @ApiOperation({ summary: 'Transfer between two accounts' })
-  transfer (@Body() data: BothWaysTransactionDto) {
-    return this.transferUseCase.execute(data);
+  async transfer (@Body() data: BothWaysTransactionDto) {
+    try {
+      return await this.transferUseCase.execute(data);
+    } catch (err) {
+      throw new BadRequestException({ statusCode: HttpStatus.BAD_REQUEST, message: err.message });
+    }
   }
 
   @Post('/withdrawal')
   @ApiOperation({ summary: 'Withdrawal from an account' })
-  withdrawal (@Body() data: SingleWayTransactionDto) {
-    return this.withdrawalUseCase.execute(data);
+  async withdrawal (@Body() data: SingleWayTransactionDto) {
+    try {
+      return await this.withdrawalUseCase.execute(data);
+    } catch (err) {
+      throw new BadRequestException({ statusCode: HttpStatus.BAD_REQUEST, message: err.message });
+    }
   }
 }

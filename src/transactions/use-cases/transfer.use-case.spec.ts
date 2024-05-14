@@ -133,18 +133,6 @@ describe('TransferUseCase', () => {
             }
         });
 
-        const transactionData = {
-            id: 1,
-            senderId: senderData.id,
-            receiverId: receiverData.id,
-            type: TransactionType.TRANSFER,
-            amount: new Decimal(100),
-            createdAt: new Date()
-        }
-
-        jest.spyOn(prismaService.transactions, 'create').mockResolvedValue(transactionData);
-        jest.spyOn(prismaService.account, 'update').mockResolvedValue(undefined);
-
         try {
             await transferUseCase.execute(dto)
         } catch (error) {

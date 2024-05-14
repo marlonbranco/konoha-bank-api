@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Param, Inject, Get } from '@nestjs/common';
+import { Controller, Post, Body, Param, Inject, Get, ConflictException, Catch, HttpException } from '@nestjs/common';
 import {
   ApiOperation,
   ApiTags,
@@ -11,6 +11,7 @@ import { GetAccountStatementUseCase } from './use-cases/get-account-statement.us
 
 @ApiTags('accounts')
 @Controller('accounts')
+@Catch(HttpException)
 export class AccountsController {
   @Inject(CreateAccountUseCase)
   private createAccountUseCase: CreateAccountUseCase;
@@ -23,8 +24,12 @@ export class AccountsController {
 
   @Post('/create')
   @ApiOperation({ summary: 'Create account' })
-  create (@Body() data: CreateAccountDto) {
-    return this.createAccountUseCase.execute(data);
+  async create (@Body() data: CreateAccountDto) {
+    try {
+      return await this.createAccountUseCase.execute(data);
+    } catch (err) {
+      throw new ConflictException();
+    }
   }
 
   @Get(':id/balance')
